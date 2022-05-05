@@ -1,4 +1,4 @@
-$morse_char = {
+MORSE_CHAR = {
   '.-' => 'a',
   '-...' => 'b',
   '-.-.' => 'c',
@@ -35,15 +35,15 @@ $morse_char = {
   '---..' => '8',
   '----.' => '9',
   '-----' => '0'
-}
+}.freeze
 
 def decode_char(char)
-  $morse_char[char].upcase
+  MORSE_CHAR[char].upcase
 end
 
 def decode_word(word)
   result = ''
-  word.split(' ').each do |n|
+  word.split.each do |n|
     result += decode_char(n)
   end
   result
@@ -51,17 +51,13 @@ end
 
 def decode(sentence)
   result = ''
-  sentence.split('   ').each_with_index  do |n, i|
-    if i == 0
-      result += decode_word(n)
-      else
-        result += ' '
-        result += decode_word(n)
-    end
+  sentence.split('   ').each_with_index do |n, i|
+    result += ' ' unless i.zero?
+    result += decode_word(n)
   end
   result
 end
 
 puts decode_char('.-')
-puts decode_word("-- -.--")
-puts decode(".-   -... --- -..-   ..-. ..- .-.. .-..   --- ..-.   .-. ..- -... .. . ...")
+puts decode_word('-- -.--')
+puts decode('.-   -... --- -..-   ..-. ..- .-.. .-..   --- ..-.   .-. ..- -... .. . ...')
